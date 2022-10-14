@@ -1,13 +1,7 @@
-<?php session_start(); ?>
-<html>
+<?php 
 
-<head>
-<title>Criar Categoria</title>
-
-</head>
-
-<body>
-<?php include ('config.php');
+session_start();
+include ('config.php');
 require('verifica.php');
 include ('funcaoLog.php');
 
@@ -44,7 +38,6 @@ if (@$_REQUEST['idCategoria'] and $_REQUEST['botao'] == "Editar")
 	$query = "
 		SELECT * FROM categoria WHERE idCategoria=$idCategoria
 	";
-	echo $query;
 	$result = mysqli_query($con, $query);
 	$row = mysqli_fetch_assoc($result);
 	//echo "<br> $query";	
@@ -86,82 +79,83 @@ if (@$_REQUEST['botao'] == "Gravar")
 
 <!TABELA CADASTRO CATEGORIA>
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style-cadCategoria.css" media="screen">
+	<title>Criar Categoria</title>
+</head>
+<body>
+<div class="criar-categoria">
+	<div>
+		<h1 id="cabecalho">Crie aqui a categoria</h1>
+	</div>
 <form action="cadCategoria.php?botao=Gravar" method="post" name="categoria">
-<br><br><br>
-<table width="200" border="1" align=center>
-  <tr>
-    <td colspan="2" align=center>Cadastro de Categoria</td>
-  </tr>
-  <tr>
-    <td width="53">Cod.</td>
-    <td width="131"><?php echo @$_POST['idCategoria']; ?>&nbsp;
-  </tr>
-  <tr>
-    <td>Categoria:</td>
-    <td><input type=text name="descricao" value=<?php echo @$_POST['descricao']; ?> ></td>
-  </tr>
- 
-    <td colspan="2" align="right">
-	<input type=submit value="Gravar" name="botao">  
-	<input type=submit value="Excluir" name="botao">  
-	<input type="hidden" name="idCategoria" value="<?php echo @$_POST['idCategoria'] ?>" />
-	</form>
-	<form action="cadCategoria.php"><input type=submit value="Novo" name="novo"></form>
-	
-</td>
-    </tr>	
-</table>
+	<fieldset class="grupo">
+		<div class="campo">
+			<label for="id"><strong>Código</strong></label>
+			<label class="campo-id" name="id"><?php echo @$_POST['idCategoria']; ?></label>
+		</div>
+		<div class="campo">
+			<label for="descricao"><strong>Titulo</strong></label>
+			<input type=text name="descricao" required value=<?php echo @$_POST['descricao']; ?> >
+		</div>
+	</fieldset>
+	<div class="botao">
+		<button class = botao1 type=submit value="Gravar" name="botao">Concluido</button>
+		<button class = botao2 type=submit value="Excluir" name="botao">Excluir</button>
+		<input type="hidden" name="idCategoria" value="<?php echo @$_POST['idCategoria'] ?>" />
+</form>
+		<form action="cadCategoria.php"><button class = botao3 type=submit value="Novo" name="novo">Novo</button></form>
+	</div>
+</div>
 
 
-<!Tabela para mostrar todas as categorias>
+<div>
+	<h1 id="meio">Todas categorias</h1>
+</div>
 
-<br><br><br>
 
-<table width="300" border="1" align=center>  
-  <tr bgcolor="#9999FF">
-    <th width="5%">Código Categoria</th>
-    <th width="30%">Categoria</th>
-  </tr>
+<!--Tabela para mostrar todas as categorias-->
+<div class="table100">
+	<table>
+		<thead>
+			<tr>
+				<th>Código</th>
+				<th>Categoria</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+				<?php
 
-<?php
+				@$categoria = $_POST['idCategoria'];
+				$query = "SELECT *
+						FROM categoria 
+						WHERE idCategoria > 0 ";
+				$result = mysqli_query($con, $query);
 
-	@$categoria = $_POST['idCategoria'];
-	
-	$query = "SELECT *
-			  FROM categoria 
-			  WHERE idCategoria > 0 ";
-	$result = mysqli_query($con, $query);
-	
-	while ($coluna=mysqli_fetch_array($result)) 
-	{
-		
-	?>
-    
-    <tr>
-      <th width="5%"><?php echo $coluna['idCategoria']; ?></th>
-      <th width="30%"><?php echo $coluna['descricao']; ?></th>
-		<th width="5%">
-        <a href="cadCategoria.php?botao=Editar&idCategoria=<?php echo $coluna['idCategoria']; ?>">
-		Editar</a>
-        </th>
-    </tr>
+				while ($coluna=mysqli_fetch_array($result)) 
+				{
 
-    <?php
-	
-	} // fim while
-	?>
+				?>
+				<tr>
+					<th><?php echo $coluna['idCategoria'];?> </th>
+					<th><?php echo $coluna['descricao'];?> </th>
+					<th>
+				<a href="cadCategoria.php?botao=Editar&idCategoria=<?php echo $coluna['idCategoria']; ?>" >Editar</a>
+				</th>
+				</tr>
+
+				<?php } ?>
+			
+		</tbody>
 	</table>
-
-<br><br><br>
-
-	
-	<table width="200" border="1" align=center>
-	<tr bgcolor="#9999FF">
-    <th width="5%"><a 
-		href="menu.php"
-		>Menu</a> </th>
-	</tr>
-	</table>
+</div>
 
 </body>
 </html>

@@ -118,7 +118,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 		</div>
 	</fieldset>	
 	<div class="campo">
-	<label for="categoria"><strong>Categoria</strong></label>
+		<label for="categoria"><strong>Categoria</strong></label>
 		<?php
 			
 			$query = "
@@ -147,6 +147,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 		?>
 		</select>
 	</div>
+
 	<?php if ($_SESSION["usuarioNivel"] == "1"){ ?>
 	<div class="campo">
 		<label><strong>Anúncio Ativo</strong></label>
@@ -158,10 +159,14 @@ if (@$_REQUEST['botao'] == "Gravar")
 		</label>
 	</div>
 	<?php } ?>
-	<button class="botao" type="submit" name="botao" value="Gravar">Concluido</button>
+	
+		<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
 		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-			<button class="botao-2" type="submit" name="botao" value="Gravar">Excluir</button>
+		<button class="botao2" type="submit" name="botao" value="Gravar">Excluir</button>
+	
 		<?php } ?>
-	<input type="hidden" name="idAnuncio" value="<?php echo @$_POST['idAnuncio'] ?>" />
+		
+		<input type="hidden" name="idAnuncio" value="<?php echo @$_POST['idAnuncio'] ?>" />
+	</form>
 </body>
 </html>

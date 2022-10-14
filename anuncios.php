@@ -1,11 +1,21 @@
-<html>
-<head>
-<title>An&uacute;ncios</title>
 <?php 
 	include ('config.php'); 
 ?>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style-anuncios.css" media="screen">
 
+	<style>
+        .currSign:before {
+            content: 'R$';
+        }
+    </style>
+	<title>Anúncios</title>
+</head>
 <body>
 
 <form action="anuncios.php?botao=gerar" method="post" name="form1">
@@ -49,64 +59,51 @@
 </table>
 </form>
 
-
-<table width="95%" border="1" align="center">
-  <tr bgcolor="#9999FF">
-    <td colspan=5 align="center"><a href=anuncios.php>An&uacute;ncios</a></td>
-  </tr>
-  
-  <tr bgcolor="#9999FF">
-    <th width="7%">Imagem</th>
-    <th width="5%">Produto</th>
-    <th width="30%">Descrição</th>
-    <th width="15%">Preço</th>
-	<th width="15%">Categoria</th>
-  </tr>
-
-<?php
+<!-- novo código -->
+<div>
+	<h1 id="cabecalho">Anúncios</h1>
+</div>
+<div class="tamanho-tabela">
+	<table class="anuncios">
+	<?php
 
 	@$categoria = $_POST['idCategoria'];
 	@$ordem = $_POST['ordem'];
-	
+
 	$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria WHERE anuncioAtivo = 1";
 	$query .= ($categoria ? " AND categoria.idCategoria LIKE '%$categoria%' " : "");
 	$query .= ($ordem ? " ORDER BY  preco $ordem" : "");
-	
+
 	$result = mysqli_query($con, $query);
 
-/*
-	echo "<pre>";
-	echo $query;
-	echo mysql_error();
-	echo "</pre>";
-*/
 	while ($coluna=mysqli_fetch_array($result)) 
-	{
-		
+	{ 
 	?>
-    
-    <tr>
-	<th width="7%"><img src="uploads/<?php echo $coluna['foto']; ?>" width=40 height=40></th>
-      <th width="5%"><?php echo $coluna['titulo']; ?></th>
-      <th width="30%"><?php echo $coluna['descricaoAnuncio']; ?></th>
-      <th width="15%"><?php echo $coluna['preco']; ?></th>
-      <th width="15%"><?php echo $coluna['descricao']; ?></th>
-    </tr>
+		<tr class="tr-imagem">
+			<td class="td-imagem" rowspan="3"><img class="imagem" src="uploads/<?php echo $coluna['foto']; ?>"</td>
+		</tr>
+		<tr class="tr-titulo">
+			<td class="td-titulo"><strong><?php echo $coluna['titulo']; ?></strong></td>
+			<td class="td-preco"><strong class="conv-preco"><?php echo $coluna['preco']; ?></strong></td>
+				<script>
+					let x = document.querySelectorAll(".conv-preco");
+					for (let i = 0, len = x.length; i < len; i++) {
+						let num = Number(x[i].innerHTML)
+								.toLocaleString('en');
+						x[i].innerHTML = num;
+						x[i].classList.add("currSign");
+					}
+				</script>
+		</tr>
+		<tr class="tr-descricao">
+			<td class="td-descricaoAnuncio"><?php echo $coluna['descricaoAnuncio']; ?></td>
+			<td class="td-categoria"><?php echo $coluna['descricao']; ?></td>
+		</tr>
+	<?php 
+	} ?>
 
-    <?php
-	
-	} // fim while
-?>
 	</table>
+</div>	
 	
-	<br><br><br>
-	
-	<table width="30%" border="1" align="center">
-	<tr bgcolor="#9999FF">
-    <th width="5%"><a 
-            href="menu.php"
-            >Menu</a> </th>
-    
-  </tr>
-	</table>
 </body>
+</html>

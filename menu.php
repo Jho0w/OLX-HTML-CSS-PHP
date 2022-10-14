@@ -41,7 +41,7 @@ if ($_SESSION["usuarioNivel"] == "0"){
 <?php
 } else{
 ?>
-<!Início menu ADMIN>
+<!--Início menu ADMIN-->
 
 <table width="200" border="1" align=center>
   <tr>

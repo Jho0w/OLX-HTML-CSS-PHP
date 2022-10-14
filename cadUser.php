@@ -1,4 +1,3 @@
-<!--Tela cadastro User-->
 <?php session_start(); 
 require ('config.php');
 include ('funcaoLog.php');
@@ -95,7 +94,12 @@ if (@$_REQUEST['botao'] == "Gravar")
 </head>
 <body>
 	<div>
+		<?php
+		if (@!$_REQUEST['idIser']){ ?>
 		<h1 id="titulo">Faça seu cadastro</h1>
+		<?php } else { ?>
+		<h1 id="titulo">Atualize o cadastro</h1>
+		<?php } ?>
 	</div>
 	<form enctype="multipart/form-data" action="cadUser.php?botao=gravar" method="post" name="user">	
 		<div>
@@ -150,11 +154,13 @@ if (@$_REQUEST['botao'] == "Gravar")
 			<input type="file" name="userfile" id="userfile"/>
 			</label>
 		</div>
-		<button class="botao" type="submit" name="botao" value="Gravar">Concluido</button>
+		<div class="botao">
+		<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
 		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-			<button class="botao-2" type="submit" name="botao" value="Gravar">Excluir</button>
+			<button class="botao2" type="submit" name="botao" value="Gravar">Excluir</button>
 		<?php } ?>
 		<input type="hidden" name="idUser" value="<?php echo @$_POST['idUser'] ?>" />
+		</div>
 	</form>
 </body>
 </html>

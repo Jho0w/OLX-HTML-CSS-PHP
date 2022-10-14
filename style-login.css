@@ -15,17 +15,21 @@ a.link{
 .retangulo-fundo{
     width: 300px;
     min-height: 360px;    
-    margin: 100px auto;
-    position: relative;
-
-    background: #A8A6A6;
+    border-color: #59429d;
+    border: 1;
     border-radius: 3px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    
 }
 
 
 
 body{
-    background-color: #59429d;
+    background-color: #F0F8FF;
     font-family: sans-serif;
     font-size: 1em;
 }
@@ -61,15 +65,16 @@ input, button{
 }
 
 .campo label{
-    margin-bottom: 0.2em;
-    color: rgba(0, 0, 0, 0.52);
+    margin-bottom: 5px;
+    color: #59429d;
     display: block;
 }
 
 .campo input[type=text], .campo input[type=password]{
     padding: 0.4em;
-    border: 0.7px solid #D9D9D9;
-    box-shadow: 2px, 2px, 2px rgb(0,0,0,0.2);
+    border: 1px solid #59429d;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+    display: block;
     position: relative;
     width: 250px;
 }
@@ -89,7 +94,7 @@ input, button{
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     margin-top: 1.5em;
     float: right;
-    margin-right: 95px;
+    margin-left: 25px;
 
     -webkit-transition: all 0.4s linear;
     transition: all 0.4s  linear;
@@ -103,13 +108,14 @@ input, button{
 
 .link {
     font-size: 13px;
-    background: #A8A6A6;
+    background: #59429d;
     padding: 10px;
-    color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
     margin-top: 65px;
     margin-right: 23px;
     margin-left: 23px;
     border: 0;
+    width: 250px;
 
    
     -webkit-border-radius: 4px;
@@ -122,9 +128,10 @@ input, button{
 
 
   #link-1{
-    background-color: #ffffff;
+    background-color: #59429d;
     align-items: center;
     padding: 6px;
+    color: #ffffff;
 
     -webkit-border-radius: 4px;
     border-radius: 4px; 
@@ -140,10 +147,11 @@ input, button{
   }
 
   #link-2{
-    background-color: #ffffff;
-   margin-left: 40px;
+    background-color: #59429d;
+    margin-left: 60px;
     align-items: center;
     padding: 6px;
+    color: #ffffff;
 
     -webkit-border-radius: 4px;
     border-radius: 4px; 
