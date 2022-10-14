@@ -1,18 +1,8 @@
 <!--Tela cadastro User-->
-<?php session_start(); ?>
-
-<html>
-
-<head>
-<title>Criar conta</title>
-<?php 
+<?php session_start(); 
 require ('config.php');
 include ('funcaoLog.php');
-?>
-</head>
 
-<body>
-<?php
 $idUser = @$_REQUEST['idUser'];
 
 if (@$_REQUEST['botao'] == "Excluir") {
@@ -24,7 +14,6 @@ if (@$_REQUEST['botao'] == "Excluir") {
 		
 		if ($result_excluir) echo "<h2> Registro excluido com sucesso!!!</h2>";
 		else echo "<h2> Nao consegui excluir!!!</h2>";
-		#Ele exclue só se tiver com todos os campos na tabela preenchidos
 }
 
 if (@$_REQUEST['idUser'] and @!$_REQUEST['botao'])
@@ -43,6 +32,7 @@ if (@$_REQUEST['idUser'] and @!$_REQUEST['botao'])
 
 if (@$_REQUEST['botao'] == "Gravar") 
 {
+	
 	$senha = md5($_POST['senha']);
 	//Upload de imagens
 	$uploaddir = 'uploads/';
@@ -91,66 +81,80 @@ if (@$_REQUEST['botao'] == "Gravar")
 }
 ?>
 
-<!TABELA CADASTRO USUÁRIO>
 
-<form enctype="multipart/form-data" action="cadUser.php?botao=gravar" method="post" name="user">
-<table width="200" border="1" align=center>
-  <tr>
-    <td colspan="2">Cadastro de Usuário</td>
-  </tr>
-  <tr>
-    <td width="53">Cod.</td>
-    <td width="131"><?php echo @$_POST['idUser']; ?>&nbsp;
-  </tr>
-  <tr>
-    <td>Nome:</td>
-    <td><input type=text name="nome" value=<?php echo @$_POST['nome']; ?> ></td>
-  </tr>
-  <tr>
-    <td>Data de Nascimento:</td>
-    <td><input type=date name="idade" value=<?php echo @$_POST['idade']; ?> ></td>
-  </tr>
-  <tr>
-    <td>Login:</td>
-    <td><input type=text name="login" value=<?php echo @$_POST['login']; ?> ></td>
-  </tr>
-  <tr>
-    <td>Senha:</td>
-    <td><input type=text name="senha" value=<?php echo @$_POST['senha']; ?>></td>
-  </tr>
-  <?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-  <tr>
-    <td>Admin:</td>
-    <td>
-	<input type=radio name="admin" value="1" <?php echo (@$_POST['admin'] == "1" ? " checked" : "" );?> > Administrador<br>
-	<input type=radio name="admin" value="0" <?php echo (@$_POST['admin'] == "0" ? " checked" : "" );?> > Usuário 
-	</td>
-  </tr>
-  <?php } ?>
-  <tr> <td>
-    Foto: </td>
-	<td><input type="file" name="userfile"/>
-    </td>
-  </tr>
- 
-    <td colspan="2" align="right"><input type=submit value="Gravar" name="botao"> - <input type=submit value="Excluir" name="botao"> - <input type='reset' value="Novo" name="novo">	<input type="hidden" name="idUser" value="<?php echo @$_POST['idUser'] ?>" />
-	
-</td>
-    </tr>	
-</table>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style-cadUser.css" media="screen">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<br><br><br>
-	
-	<table width="200" border="1" align=center>
-	<tr bgcolor="#9999FF">
-    <th width="5%"><a 
-            href="menu.php"
-            >Menu</a> </th>
-    
-  </tr>
-	</table>
-	
-</form>
+	<title>Criar conta</title>
+</head>
+<body>
+	<div>
+		<h1 id="titulo">Faça seu cadastro</h1>
+	</div>
+	<form enctype="multipart/form-data" action="cadUser.php?botao=gravar" method="post" name="user">	
+		<div>
+			<?php echo @$_POST['idUser']; ?>
+		</div>
+		<fieldset class="grupo">
+			<div class="campo">
+				<label for="nome"><strong>Nome</strong></label>
+				<input type="text" name="nome" id="nome" required value=<?php echo @$_POST['nome'];?> >
+			</div>
+			<div class="campo">
+				<label for="idade"><strong>Data de Nascimento</strong></label>
+				<input type="date" name="idade" id="idade" value=<?php echo @$_POST['idade'];?> >
+			</div>
+		</fieldset>	
+		<div class="campo">
+			<label for="login"><strong>Login</strong></label>
+			<input type=text name="login" id="login" value=<?php echo @$_POST['login'];?> >
+		</div>
+		<div class="campo">
+			<label for="senha"><strong>Senha</strong></label>
+			<input type=password name="senha" id="senha" value=<?php echo @$_POST['senha'];?> >
+		</div>
+		<div class="campo">
+			<label for="senha2"><strong>Confirme sua Senha</strong></label>
+			<input type=password name="senha2" id="senha2">
+		</div>
 
+		<script>
+			$('form').on('submit', function () {
+			if ($('#senha').val() != $('#senha2').val()) {
+				alert('Senhas diferentes');
+				return false;
+			}
+		});
+		</script>
+
+		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
+		<div class="campo">
+			<label><strong>Nível do Usuário</strong></label>
+			<label>
+				<input type="radio" name="admin" value="1" <?php echo (@$_POST['admin'] == "1" ? " checked" : "" );?> > Administrador
+			</label>
+			<label>
+				<input type="radio" name="admin" value="0" <?php echo (@$_POST['admin'] == "0" ? " checked" : "" );?> > Usuário
+			</label>
+		</div>
+		<?php } ?>
+		<div>
+			<label><strong>Foto de perfil</strong></label>
+			<label class="foto" for="userfile">Sua melhor foto</label>
+			<input type="file" name="userfile" id="userfile"/>
+			</label>
+		</div>
+		<button class="botao" type="submit" name="botao" value="Gravar">Concluido</button>
+		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
+			<button class="botao-2" type="submit" name="botao" value="Gravar">Excluir</button>
+		<?php } ?>
+		<input type="hidden" name="idUser" value="<?php echo @$_POST['idUser'] ?>" />
+	</form>
 </body>
 </html>

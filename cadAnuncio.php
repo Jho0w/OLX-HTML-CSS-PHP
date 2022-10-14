@@ -1,19 +1,9 @@
 <!--Tela cadastro Anuncio-->
-<?php session_start(); ?>
-
-<html>
-
-<head>
-<title>Criar Anúncio</title>
-<?php
+<?php session_start();
 require ('config.php');
 require('verifica.php');
 include ('funcaoLog.php');
-?>
-</head>
 
-<body>
-<?php
 $idUser = $_SESSION["idUser"];
 @$idAnuncio = $_REQUEST["idAnuncio"];
 
@@ -65,7 +55,6 @@ if (@$_REQUEST['botao'] == "Gravar")
 		$insere = "INSERT INTO anuncio (foto, titulo, descricaoAnuncio, preco, idCategoria, idUser, anuncioAtivo) VALUES ('{$_FILES["userfile"]["name"]}', '{$_POST['titulo']}', '{$_POST['descricaoAnuncio']}', '{$_POST['preco']}', '{$_POST['idCategoria']}', '$idUser', '$anuncioAtivo')";
 		$result_insere = mysqli_query($con, $insere);
 		
-		
 		if ($result_insere) echo "<h2> Registro inserido com sucesso!!!</h2>";
 		else echo "<h2> Nao consegui inserir!!!</h2>";
 		
@@ -89,93 +78,90 @@ if (@$_REQUEST['botao'] == "Gravar")
 }
 ?>
 
-<!--TABELA CADASTRO ANUNCIO-->
-
-<form enctype="multipart/form-data" action="cadAnuncio.php?botao=gravar" method="post" name="anuncio">
-<table width="200" border="1" align=center>
-  <tr>
-    <td colspan="2">Cadastro de Anúncios</td>
-  </tr>
-  <tr>
-    <td width="53">Cod.</td>
-    <td width="131"><?php echo @$_POST['idAnuncio']; ?>&nbsp;
-  </tr>
-  <tr> 
-	<td>Foto: </td>
-	<td><input type="file" name="userfile"/>
-    </td>
-  </tr>
-  <tr>
-    <td>Título:</td>
-    <td><input type=text name="titulo" value=<?php echo @$_POST['titulo']; ?> ></td>
-  </tr>
-  <tr>
-    <td>Descrição:</td>
-    <td><input type=textarea name="descricaoAnuncio" value=<?php echo @$_POST['descricaoAnuncio']; ?> ></td>
-  </tr>
-  <tr>
-    <td>Preço:</td>
-    <td><input type=text name="preco" value=<?php echo @$_POST['preco']; ?> ></td>
-  </tr>
-  <tr><td>Categoria:</td>
-  <td>
-  <!--COMBO BOX-->
-  
-	<?php
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style-cadAnuncio.css" media="screen">
+	
+	<title>Cadastro de Anúncios</title>
+</head>
+<body>
+	<div>
+		<h1 id="cabecalho">Crie agora seu anúncio!</h1>
+	</div>	
+	
+	<form enctype="multipart/form-data" action="cadAnuncio.php?botao=gravar" method="post" name="anuncio">
+	<div>
+		<?php echo @$_POST['idAnuncio']; ?>
+	</div>
+	<div class="grupo">
+		<label><strong>Foto</strong></label>
+		<label class="foto" for="userfile">Sua melhor foto</label>
+		<input type="file" name="userfile" id="userfile"/>
+		</label>
+	</div>
+	<fieldset class="grupo">
+		<div class="campo">
+			<label for="titulo"><strong>Titulo</strong></label>
+			<input class="campo-titulo" type="text" name="titulo" id="titulo" required value=<?php echo @$_POST['titulo'];?> >
+		</div>
+		<div class="campo">
+			<label for="descricaoAnuncio"><strong>Descrição</strong></label>
+			<input type="textarea" name="descricaoAnuncio" id="descricaoAnuncio" value=<?php echo @$_POST['descricaoAnuncio'];?> >
+		</div>
+		<div class="campo">
+			<label for="preco"><strong>Preço</strong></label>
+			<input type=text name="preco" value=<?php echo @$_POST['preco']; ?> >
+		</div>
+	</fieldset>	
+	<div class="campo">
+	<label for="categoria"><strong>Categoria</strong></label>
+		<?php
 			
-		$query = "
-			SELECT idCategoria, descricao
-			FROM categoria
-		";
-		$result = mysqli_query($con, $query);
-	?>
+			$query = "
+				SELECT idCategoria, descricao
+				FROM categoria
+			";
+			$result = mysqli_query($con, $query);
+		?>
+
 		<select  name="idCategoria">
-		<option value=""> ..:: selecione ::.. </option>
+		<option value="">Selecione</option>
+		
 		<?php
 		while( $row = mysqli_fetch_assoc($result) )
-		{
-		
-	?>
+		{	
+		?>
+
 		<option value="<?php echo $row['idCategoria'];?>">
+
 		<?php echo @$row['descricao'] ?>
-	
+
 		</option>
-	<?php
-		}
-	?>
+		
+		<?php
+			}
+		?>
 		</select>
-  
-  <!--FIM COMBO BOX-->
-	</td>
-  </tr>
-  <!--Caso ADM liberar anuncio ativo-->
+	</div>
 	<?php if ($_SESSION["usuarioNivel"] == "1"){ ?>
-  <tr>
-    <td>Anúncio Ativo:</td>
-    <td>
-	<input type=radio name="anuncioAtivo" value="1" <?php echo (@$_POST['anuncioAtivo'] == "1" ? " checked" : "" );?> > Ativo<br>
-	<input type=radio name="anuncioAtivo" value="2"<?php echo (@$_POST['anuncioAtivo'] == "2" ? " checked" : "" );?> > Offline 
-	</td>
-  </tr> 
+	<div class="campo">
+		<label><strong>Anúncio Ativo</strong></label>
+		<label>
+			<input type=radio name="anuncioAtivo" value="1" <?php echo (@$_POST['anuncioAtivo'] == "1" ? " checked" : "" );?> > Ativo
+		</label>
+		<label>
+			<input type=radio name="anuncioAtivo" value="2"<?php echo (@$_POST['anuncioAtivo'] == "2" ? " checked" : "" );?> > Offline 
+		</label>
+	</div>
 	<?php } ?>
-    <td colspan="2" align="right"><input type=submit value="Gravar" name="botao"> - <input type=submit value="Excluir" name="botao"> - <input type='reset' value="Novo" name="novo">	<input type="hidden" name="idAnuncio" value="<?php echo @$_POST['idAnuncio'] ?>" />
-	
-</td>
-    </tr>	
-</table>
-
-<br><br><br>
-	
-	<table width="200" border="1" align=center>
-	<tr bgcolor="#9999FF">
-    <th width="5%"><a 
-            href="menu.php"
-            >Menu</a> </th>
-    
-  </tr>
-	</table>
-	
-</form>
-
+	<button class="botao" type="submit" name="botao" value="Gravar">Concluido</button>
+		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
+			<button class="botao-2" type="submit" name="botao" value="Gravar">Excluir</button>
+		<?php } ?>
+	<input type="hidden" name="idAnuncio" value="<?php echo @$_POST['idAnuncio'] ?>" />
 </body>
 </html>

@@ -68,8 +68,8 @@
 	@$categoria = $_POST['idCategoria'];
 	@$ordem = $_POST['ordem'];
 	
-	$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria";
-	$query .= ($categoria ? " WHERE categoria.idCategoria LIKE '%$categoria%' " : "");
+	$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria WHERE anuncioAtivo = 1";
+	$query .= ($categoria ? " AND categoria.idCategoria LIKE '%$categoria%' " : "");
 	$query .= ($ordem ? " ORDER BY  preco $ordem" : "");
 	
 	$result = mysqli_query($con, $query);

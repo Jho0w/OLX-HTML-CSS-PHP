@@ -25,13 +25,13 @@ a.link{
 
 
 body{
-    background-color: #F0F8FF;
+    background-color: #59429d;
     font-family: sans-serif;
     font-size: 1em;
 }
 
 .titulo{
-    color: #F0F8FF;
+    color: #59429d;
     padding: 2px 0 10px 0;
     text-align: center;
 }
@@ -79,13 +79,14 @@ input, button{
 }
 
 .botao{
-    font-size: 17px;
-    background: #ffffff;
+    font-size: 1.2em;
+    background: #59429d;
     border: 0;
-    color: rgba(0, 0, 0, 0.7);
-    padding: 0.4em 1.7em;
-    box-shadow: 2px, 2px, 2px rgb(0,0,0,0.2);
-    text-shadow: 1px, 1px, 1px rgb(0,0,0,0.2);
+    margin-bottom: 1em;
+    color: #ffffff;
+    padding: 0.2em 0.6em;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     margin-top: 1.5em;
     float: right;
     margin-right: 95px;
