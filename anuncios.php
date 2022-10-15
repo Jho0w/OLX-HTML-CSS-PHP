@@ -18,92 +18,90 @@
 </head>
 <body>
 
-<form action="anuncios.php?botao=gerar" method="post" name="form1">
-<table width="95%" border="1" align="center">
-  <tr>
-    <td colspan=4 align="center">An&uacute;ncios</td>
-  </tr>
-  <tr>
-	<td width="40%" >Ordem por preço::
-	<select name=ordem>
-		<option value=""> ..:: selecione ::.. </option>
-		<option value="asc">Crescente</option>
-		<option value="desc">Decrescente</option>
-	</select>
-	</td>
-	<td width="40%" >Categoria: <select  name="idCategoria">
-	<!--COMBO BOX-->
-	<?php
-			
-		$query = "
-			SELECT idCategoria, descricao
-			FROM categoria
-		";
-		$result = mysqli_query($con, $query);
-	?>
-		<option value=""> ..:: selecione ::.. </option>
-		<?php
-		while( $row = mysqli_fetch_assoc($result) )
-		{
-	?>
-			<option value="<?php echo $row['idCategoria']; ?>" ><?php echo @$row['descricao'] ?></option>
-	<?php
-		}
-	?>
-		</select>
-	<!--FIM COMBO BOX-->
-	</td>
-<!--botão gerar-->
-<td rowspan=2> <input type="submit" name="botao" value="Filtrar" /> </td> 
-  </tr>
-</table>
-</form>
-
-<!-- novo código -->
 <div>
 	<h1 id="cabecalho">Anúncios</h1>
 </div>
-<div class="tamanho-tabela">
-	<table class="anuncios">
-	<?php
 
-	@$categoria = $_POST['idCategoria'];
-	@$ordem = $_POST['ordem'];
+<form action="anuncios.php?botao=gerar" method="post" name="form1">
+	
+	<div class="filtro">
+		<label for="preco"><strong>Ordenar por</strong></label>
+		<select  name="idCategoria">
+			<option value="">Selecione</option>
+			<option value="asc">Menor preço</option>
+			<option value="desc">Maior preço</option>
+		</select>
+	
+		<label class="categoria" for="categoria"><strong>Tipos de Anuncio</strong></label>
+		<?php
+			
+			$query = "
+				SELECT idCategoria, descricao
+				FROM categoria
+			";
+			$result = mysqli_query($con, $query);
+		?>
 
-	$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria WHERE anuncioAtivo = 1";
-	$query .= ($categoria ? " AND categoria.idCategoria LIKE '%$categoria%' " : "");
-	$query .= ($ordem ? " ORDER BY  preco $ordem" : "");
+		<select  name="idCategoria">
+		<option value="">Selecione</option>
+		
+		<?php
+		while( $row = mysqli_fetch_assoc($result) )
+		{	
+		?>
 
-	$result = mysqli_query($con, $query);
+		<option value="<?php echo $row['idCategoria'];?>">
 
-	while ($coluna=mysqli_fetch_array($result)) 
-	{ 
+		<?php echo @$row['descricao'] ?>
+
+		</option>
+		
+		<?php
+			}
+		?>
+		</select>
+	</div>
+	<button class="botao" type="submit" name="botao" value="Filtrar">Filtrar</button>
+</form>
+
+
+
+<div class="lista">
+<?php
+
+@$categoria = $_POST['idCategoria'];
+@$ordem = $_POST['ordem'];
+
+$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria WHERE anuncioAtivo = 1";
+$query .= ($categoria ? " AND categoria.idCategoria LIKE '%$categoria%' " : "");
+$query .= ($ordem ? " ORDER BY  preco $ordem" : "");
+
+$result = mysqli_query($con, $query);
+
+while ($coluna=mysqli_fetch_array($result)) 
+{ 
 	?>
-		<tr class="tr-imagem">
-			<td class="td-imagem" rowspan="3"><img class="imagem" src="uploads/<?php echo $coluna['foto']; ?>"</td>
-		</tr>
-		<tr class="tr-titulo">
-			<td class="td-titulo"><strong><?php echo $coluna['titulo']; ?></strong></td>
-			<td class="td-preco"><strong class="conv-preco"><?php echo $coluna['preco']; ?></strong></td>
-				<script>
-					let x = document.querySelectorAll(".conv-preco");
-					for (let i = 0, len = x.length; i < len; i++) {
-						let num = Number(x[i].innerHTML)
-								.toLocaleString('en');
-						x[i].innerHTML = num;
-						x[i].classList.add("currSign");
-					}
-				</script>
-		</tr>
-		<tr class="tr-descricao">
-			<td class="td-descricaoAnuncio"><?php echo $coluna['descricaoAnuncio']; ?></td>
-			<td class="td-categoria"><?php echo $coluna['descricao']; ?></td>
-		</tr>
-	<?php 
-	} ?>
-
-	</table>
-</div>	
+	<div class="container">
+		<div id="foto"><p><img class="imagem" src="uploads/<?php echo $coluna['foto']; ?>"></p></div>
+		<div id="titulo"><strong><?php echo $coluna['titulo']; ?></strong></div>
+		<div id="preco"><strong class="conv-preco"><?php echo $coluna['preco']; ?></strong></div>
+			
+		<div id="descricao"><?php echo $coluna['descricaoAnuncio']; ?></div>
+		<div id="categoria"><p><?php echo $coluna['descricao']; ?></p></div>
+	</div>
+	<br>
+<?php 
+} ?>
+</div>
+	<script>
+		let x = document.querySelectorAll(".conv-preco");
+		for (let i = 0, len = x.length; i < len; i++) {
+			let num = Number(x[i].innerHTML)
+					.toLocaleString('pt-BR');
+			x[i].innerHTML = num;
+			x[i].classList.add("currSign");
+		}
+	</script>
 	
 </body>
 </html>

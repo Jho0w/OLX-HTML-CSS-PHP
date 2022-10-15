@@ -6,7 +6,7 @@
 #cabecalho{
     font-family: sans-serif;
     color:#59429d;
-    margin-left: 7%;
+    margin-left: 20%;   
 }
 
 #check{
@@ -18,68 +18,110 @@ body{
     font-family: sans-serif;
     font-size: 1.2em;
     color: #59429d;
-    margin-left: 36%;
+    margin-left: 30%;
     margin-top: 3%;
     justify-content: center;
 }
 
-.tamanho-tabela {
-    margin-top: 50px;
-    width: 500px;
-    border-color: #59429d;
-    border: 1;
+select, button {
+    font-family: sans-serif;
+    font-size: 1em;
+    color: #59429d;
+    border-radius: 5px;
+}
+
+select{
+    cursor: pointer;
+}
+
+.filtro{
+    margin-top: 20px;
+}
+
+.categoria{
+    margin-left: 30px;
+}
+
+.filtro label {
+    margin-bottom: 1px;
+    color: #59429d;
+}
+
+.botao {
+    font-size: 1em;
+    background: #59429d;
+    border: 0;
+    margin-top: 7px;
+    margin-bottom: 1em;
+    align-items: center;
+    color: #ffffff;
+    padding: 0.2em 0.6em;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.botao:hover {
+    background: #CCBBFF;
+    box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
+    text-shadow: none;
+}
+
+.container{
+    padding: 2px;
+    display: grid;
+    width: 550px;
+    border-radius: 3px;
+    border: 0.5px solid #59429d;
+    grid-template-areas:
+     'foto titulo preco'
+     'foto descricao categoria'
+    ;
+}
+
+.container div{
     border-radius: 3px;
 }
 
-.anuncios {
-    border-spacing: 1;
-    border-collapse: collapse;
-    background: #fff;
-    border-color: #59429d;
-    border: 1;
-    border-radius: 7px;
-    overflow: hidden;
-    width: 500px;
-    position: relative;
-}
-
-.anuncios tr:hover {
-    background: #F0F0F0;
-}
-
-.tr-titulo{
-    weight: 40px;
-}
-
-.td-imagem{
-    width: 150px;
-}
 .imagem{
-    width: 130px;
-    weight: 130px
+    width: 135px;
 }
 
-.td-titulo{
-    width: 250px;
-    weight: 40px;
-    font-size: 1.2em;
-    color: #59429d;
+#foto{
+    grid-area: foto;
+    width: 135px;
+    text-align: center;
 }
 
-.td-preco{
-    
-    font-size: 1.2em;
-    color: #59429d;
+#titulo{
+    grid-area: titulo;
+    font-size: 25px;
+    text-align: left;
+    height: 50px;
+    width: 220px;
+}
+
+#preco{
+    grid-area: preco;
+    font-size: 30px;
     text-align: right;
+    height: 50px;
+    width: 170px;
 }
 
-.td-descricaoAnuncio{
-    weight: 90px;
-    font-size: 0.8em;
+#descricao{
+    grid-area: descricao;
+    font-size: 18px;
+    height: 80px;
+    width: 220px;
+    position: relative;
+    bottom: 0;
+    right: 0;
 }
 
-.td-categoria{
+#categoria{
+    grid-area: categoria;
+    font-size: 13px;
     text-align: right;
-    weight: 90px;
-    font-size: 0.8em;
+    height: 80px;
+    width: 170px;
 }

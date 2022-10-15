@@ -128,7 +128,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 			$result = mysqli_query($con, $query);
 		?>
 
-		<select  name="idCategoria">
+		<select name="idCategoria">
 		<option value="">Selecione</option>
 		
 		<?php

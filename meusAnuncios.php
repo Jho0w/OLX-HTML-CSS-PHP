@@ -1,126 +1,58 @@
-<?php session_start(); ?>
-<html>
-<head>
-<title>Meus An&uacute;ncios</title>
 <?php 
-	include ('config.php'); 
-?>
-</head>
-
-<body>
-<?php 
+session_start(); 
+include ('config.php'); 
 require('verifica.php');
-
 $idUser = $_SESSION["idUser"];
-//programando botão gerar;
-if (@!$_REQUEST['botao'] == "Gerar") { ?>
+?>
 
-<form action="meusAnuncios.php?botao=gerar" method="post" name="form1">
-<table width="95%" border="1" align="center">
-  <tr>
-    <td colspan=4 align="center">An&uacute;ncios</td>
-  </tr>
-  <tr>
-	<td width="40%" >
-	<!COMBO BOX>
-  
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="meusAnuncios.css" media="screen">
+	<title>Meus Anúncios</title>
+</head>
+<body>
+
+	<div>
+		<h1 id="cabecalho">Meus Anúncios</h1>
+	</div>
+
+	<div class="lista">
 	<?php
-			
-		$query = "
-			SELECT idCategoria, descricao
-			FROM categoria 
-		";
-		$result = mysqli_query($con, $query);
-	?>
-		    Categoria: <select  name="idCategoria">
-		      <option value=""> ..:: selecione ::.. </option>
-		      <?php
-		while( $row = mysqli_fetch_assoc($result) )
-		{
-	?>
-			<option value="<?php echo $row['idCategoria']; ?>" ><?php echo @$row['descricao'] ?></option>
-	<?php
-		}
-	?>
-		    </select>
-  
-  <!FIM COMBO BOX>
-</td>
-
-<!botão gerar>
-<td rowspan=2> <input type="submit" name="botao" value="Gerar" /> </td> 
-  </tr>
-  
-</table>
-</form>
-
-<?php 
-
- }
- if (@$_REQUEST['botao'] == "Gerar") { 
-	#adicionar organização por preço ou por categoria
- }
- 
- ?>
-
-<table width="95%" border="1" align="center">
-  <tr bgcolor="#9999FF">
-    <td colspan=5 align="center"><a href=meusAnuncios.php>Meus An&uacute;ncios</a></td>
-  </tr>
-  
-  <tr bgcolor="#9999FF">
-    <th width="5%">Produto</th>
-    <th width="30%">Descrição</th>
-    <th width="15%">Preço</th>
-	<th width="15%">Categoria</th>
-  </tr>
-
-<?php
 
 	@$categoria = $_POST['idCategoria'];
-	
-	$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria";
-	$query .= ($idUser ? " WHERE idUser = $idUser" : "");
-	
+	@$ordem = $_POST['ordem'];
+
+	$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria WHERE idUser = $idUser";
+
 	$result = mysqli_query($con, $query);
 
-/*
-	echo "<pre>";
-	echo $query;
-	echo mysql_error();
-	echo "</pre>";
-*/
 	while ($coluna=mysqli_fetch_array($result)) 
-	{
-		
-	?>
-    
-    <tr>
-      <th width="5%"><?php echo $coluna['titulo']; ?></th>
-      <th width="30%"><?php echo $coluna['descricaoAnuncio']; ?></th>
-      <th width="15%"><?php echo $coluna['preco']; ?></th>
-      <th width="15%"><?php echo $coluna['descricao']; ?></th>
-		<th width="5%">
-        <a 
-            href="cadAnuncio.php?idAnuncio=<?php echo $coluna['idAnuncio']; ?>"
-            >Editar</a>
-        </th>
-    </tr>
-
-    <?php
-	
-	} // fim while
-?>
-	</table>
-	
-	<br><br><br>
-	
-	<table width="30%" border="1" align="center">
-	<tr bgcolor="#9999FF">
-    <th width="5%"><a 
-            href="menu.php"
-            >Menu</a> </th>
-    
-  </tr>
-	</table>
+	{ 
+		?>
+		<div class="container">
+			<div id="foto"><p><img class="imagem" src="uploads/<?php echo $coluna['foto']; ?>"></p></div>
+			<div id="titulo"><strong><?php echo $coluna['titulo']; ?></strong></div>
+			<div id="preco"><strong class="conv-preco"><?php echo $coluna['preco']; ?></strong></div>
+				
+			<div id="descricao"><?php echo $coluna['descricaoAnuncio']; ?></div>
+			<div id="categoria"><p><?php echo $coluna['descricao']; ?></p></div>
+		</div>
+		<br>
+	<?php 
+	} ?>
+	</div>
+	<script>
+		let x = document.querySelectorAll(".conv-preco");
+		for (let i = 0, len = x.length; i < len; i++) {
+			let num = Number(x[i].innerHTML)
+					.toLocaleString('pt-BR');
+			x[i].innerHTML = num;
+			x[i].classList.add("currSign");
+		}
+	</script>
 </body>
+</html>
