@@ -1,6 +1,6 @@
 <?php
 include ('config.php');
-session_start(); // inicia a sessao	
+session_start();
 
 if (@$_REQUEST['botao'])
 {
@@ -31,7 +31,7 @@ if (@$_REQUEST['botao'])
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="style-login.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="styles/style-login.css" media="screen">
 	<title>Login</title>
 </head>
 <body>

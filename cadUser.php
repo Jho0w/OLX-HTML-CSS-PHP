@@ -1,4 +1,5 @@
-<?php session_start(); 
+<?php
+session_start(); 
 require ('config.php');
 include ('funcaoLog.php');
 
@@ -87,17 +88,32 @@ if (@$_REQUEST['botao'] == "Gravar")
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="style-cadUser.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="styles/style-cadUser.css" media="screen">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 	<title>Criar conta</title>
 </head>
 <body>
+
+<?php
+		if (@$_SESSION['idIser']){ ?>
+		<header>
+				<nav id="menu">
+					<object width="100%" height="100px" data="menu.php"></object>
+				</nav>
+			</header>
+		<?php } ?>
+
 	<div>
 		<?php
 		if (@!$_REQUEST['idIser']){ ?>
 		<h1 id="titulo">Faça seu cadastro</h1>
 		<?php } else { ?>
+			<header>
+				<nav id="menu">
+					<object width="100%" height="100px" data="menu.php"></object>
+				</nav>
+			</header>
 		<h1 id="titulo">Atualize o cadastro</h1>
 		<?php } ?>
 	</div>
@@ -157,7 +173,9 @@ if (@$_REQUEST['botao'] == "Gravar")
 		<div class="botao">
 		<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
 		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-			<button class="botao2" type="submit" name="botao" value="Gravar">Excluir</button>
+			<button class="botao2" type="image" name="botao" value="Gravar"
+			onclick="return confirm('Tem certeza que deseja deletar este registro?')">
+			<img src="imagens/icone-excluir.png" height="20px" width="20px"></button></button>
 		<?php } ?>
 		<input type="hidden" name="idUser" value="<?php echo @$_POST['idUser'] ?>" />
 		</div>

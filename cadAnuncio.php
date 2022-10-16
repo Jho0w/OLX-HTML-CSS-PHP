@@ -1,5 +1,5 @@
-<!--Tela cadastro Anuncio-->
-<?php session_start();
+<?php 
+session_start();
 require ('config.php');
 require('verifica.php');
 include ('funcaoLog.php');
@@ -8,6 +8,7 @@ $idUser = $_SESSION["idUser"];
 @$idAnuncio = $_REQUEST["idAnuncio"];
 
 if (@$_REQUEST['botao'] == "Excluir") {
+
 		gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'excluiu', 'anuncio');
 		$query_excluir = "
 			DELETE FROM anuncio WHERE idAnuncio=$idAnuncio
@@ -84,18 +85,26 @@ if (@$_REQUEST['botao'] == "Gravar")
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="style-cadAnuncio.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="styles/style-cadAnuncio.css" media="screen">
 	
 	<title>Cadastro de Anúncios</title>
 </head>
 <body>
+
+	<header>
+		<nav id="menu">
+			<object width="100%" height="100px" data="menu.php"></object>
+		</nav>
+	</header>
+
 	<div>
 		<h1 id="cabecalho">Crie agora seu anúncio!</h1>
 	</div>	
 	
 	<form enctype="multipart/form-data" action="cadAnuncio.php?botao=gravar" method="post" name="anuncio">
 	<div>
-		<?php echo @$_POST['idAnuncio']; ?>
+		<label><strong>Código</strong></label>
+		<label><?php echo @$_POST['idAnuncio']; ?></label>
 	</div>
 	<div class="grupo">
 		<label><strong>Foto</strong></label>
@@ -162,7 +171,8 @@ if (@$_REQUEST['botao'] == "Gravar")
 	
 		<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
 		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-		<button class="botao2" type="submit" name="botao" value="Gravar">Excluir</button>
+		<button class="botao2" type="image" name="botao" value="Excluir" onclick="return confirm('Tem certeza que deseja deletar este registro?')">
+			<img src="imagens/icone-excluir.png" height="20px" width="20px"></button>
 	
 		<?php } ?>
 		

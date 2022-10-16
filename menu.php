@@ -1,76 +1,52 @@
-<?php session_start(); ?>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-<title>Menu</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="styles/style-menu.css" media="screen">
+	<title>Menu</title>
 </head>
 <body>
-<br><br><br>
-<br><br><br>
 
 <?php
+session_start(); 
 require('verifica.php');
 
 if ($_SESSION["usuarioNivel"] == "0"){
 
 ?>
+	<header>
+    <figure class="logo"><img class="perfil" alt="Logo" src="uploads/<?php $_SESSION["avatar"]; ?>" width="70px" height="70px"></figure>
 
-	<!Início menu user>
+    <nav id="menu">
+         <ul>
+            <li><a href="anuncios.php">Todos os Anúncios</a></li>
+            <li><a href="meusAnuncios.php">Meus Anúncios</a></li>
+        	<li><a href="cadAnuncio.php">Criar Anúncio</a></li>
+			<li class="sair"><a href="logout.php">Sair</a></li>
+         </ul>
+    </nav>
+</header>
 
-	<table width="200" border="1" align=center>
-	  <tr>
-		<td colspan="2" align=center>Menu User</td>
-	  </tr> 
-	  <tr>
-			<th width="25%">
-			<a href="anuncios.php">Todos os Anúncios</a>
-			</th>
-			<th width="25%">
-			<a href="meusAnuncios.php">Meus anúncios</a>
-			</th>
-			<th width="25%">
-			<a href="cadAnuncio.php">Criar anúncio</a>
-			</th>
-			<th width="25%">
-			<a href="logout.php">Sair</a>
-			</th>
-	  </tr>
-	</table>
-	 
-	<br><br><br>
-	<br><br><br>
 <?php
 } else{
 ?>
-<!--Início menu ADMIN-->
+	<header>
+		<figure class="logo"><img alt="Logo" src="uploads/<?php $_SESSION["avatar"]; ?>" width="50px" height="50px"></figure>
 
-<table width="200" border="1" align=center>
-  <tr>
-    <td colspan="2" align=center>Menu ADMIN</td>
-  </tr> 
-  <tr>
-		<th width="50%">
-        <a href="anuncios.php">Todos os Anúncios</a>
-        </th>
-		<th width="50%">
-		<a href="meusAnuncios.php">Meus anúncios</a>
-		</th>
-		<th width="50%">
-		<a href="cadAnuncio.php">Criar anúncio</a>
-		</th>
-		<th width="50%">
-		<a href="cadUser.php">Criar User</a>
-		</th>
-		<th width="50%">
-		<a href="cadCategoria.php">Criar Categoria</a>
-		</th>
-		<th width="50%">
-		<a href="anuncioAtivo.php">Liberar Anúncios</a>
-		</th>
-		<th width="50%">
-		<a href="logout.php">Sair</a>
-		</th>
-  </tr>
-</table>
+		<nav id="menu">
+			<ul>
+				<li><a href="anuncios.php">Todos os Anúncios</a></li>
+				<li><a href="#">Meus Anúncios</a></li>
+				<li><a href="cadAnuncio.php">Criar Anúncio</a></li>
+				<li><a href="cadUser.php">Criar User</a></li>
+				<li><a href="cadCategoria.php">Criar Categoria</a></li>
+				<li><a href="anuncioAtivo.php">Liberar Anúncios</a></li>
+				<li class="sair"><a href="logout.php">Sair</a></li>
+			</ul>
+		<nav>
+	</header>
 <?php
 }
 ?>

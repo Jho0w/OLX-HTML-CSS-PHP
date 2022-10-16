@@ -1,5 +1,4 @@
 <?php 
-
 session_start();
 include ('config.php');
 require('verifica.php');
@@ -77,7 +76,6 @@ if (@$_REQUEST['botao'] == "Gravar")
 }
 ?>
 
-<!TABELA CADASTRO CATEGORIA>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -85,10 +83,17 @@ if (@$_REQUEST['botao'] == "Gravar")
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="style-cadCategoria.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="styles/style-cadCategoria.css" media="screen">
 	<title>Criar Categoria</title>
 </head>
 <body>
+
+	<header>
+		<nav id="menu">
+			<object width="100%" height="100px" data="menu.php"></object>
+		</nav>
+	</header>
+
 <div class="criar-categoria">
 	<div>
 		<h1 id="cabecalho">Crie aqui a categoria</h1>
@@ -106,7 +111,8 @@ if (@$_REQUEST['botao'] == "Gravar")
 	</fieldset>
 	<div class="botao">
 		<button class = botao1 type=submit value="Gravar" name="botao">Concluido</button>
-		<button class = botao2 type=submit value="Excluir" name="botao">Excluir</button>
+		<button class = botao2 type=submit value="Excluir" name="botao" 
+		onclick="return confirm('Tem certeza que deseja deletar este registro?')">Excluir</button>
 		<input type="hidden" name="idCategoria" value="<?php echo @$_POST['idCategoria'] ?>" />
 </form>
 		<form action="cadCategoria.php"><button class = botao3 type=submit value="Novo" name="novo">Novo</button></form>
@@ -131,27 +137,27 @@ if (@$_REQUEST['botao'] == "Gravar")
 		</thead>
 		<tbody>
 			
-				<?php
+			<?php
 
-				@$categoria = $_POST['idCategoria'];
-				$query = "SELECT *
-						FROM categoria 
-						WHERE idCategoria > 0 ";
-				$result = mysqli_query($con, $query);
+			@$categoria = $_POST['idCategoria'];
+			$query = "SELECT *
+					FROM categoria 
+					WHERE idCategoria > 0 ";
+			$result = mysqli_query($con, $query);
 
-				while ($coluna=mysqli_fetch_array($result)) 
-				{
+			while ($coluna=mysqli_fetch_array($result)) 
+			{
 
-				?>
-				<tr>
-					<th><?php echo $coluna['idCategoria'];?> </th>
-					<th><?php echo $coluna['descricao'];?> </th>
-					<th>
-				<a href="cadCategoria.php?botao=Editar&idCategoria=<?php echo $coluna['idCategoria']; ?>" >Editar</a>
-				</th>
-				</tr>
+			?>
+			<tr>
+				<th><?php echo $coluna['idCategoria'];?> </th>
+				<th><?php echo $coluna['descricao'];?> </th>
+				<th>
+			<a href="cadCategoria.php?botao=Editar&idCategoria=<?php echo $coluna['idCategoria']; ?>" >Editar</a>
+			</th>
+			</tr>
 
-				<?php } ?>
+			<?php } ?>
 			
 		</tbody>
 	</table>
