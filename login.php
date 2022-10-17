@@ -1,31 +1,3 @@
-<?php
-include ('config.php');
-session_start();
-
-if (@$_REQUEST['botao'])
-{
-	$login = $_POST['login'];
-	$senha = md5($_POST['senha']);
-	
-	$query = "SELECT * FROM user WHERE login = '$login' AND senha = '$senha' ";
-	
-	$result = mysqli_query($con, $query);
-	while ($coluna=mysqli_fetch_array($result)) 
-	{
-		$_SESSION["idUser"] = $coluna["idUser"]; 
-		$_SESSION["login"] = $coluna["login"]; 
-		$_SESSION["usuarioNivel"] = $coluna["admin"];
-
-		// caso queira direcionar para páginas diferentes
-		$niv = $coluna['admin'];
-		header("Location: menu.php"); 
-		exit; 
-		// ----------------------------------------------
-	}
-	
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -41,7 +13,7 @@ if (@$_REQUEST['botao'])
 		<h1 class="titulo-1">Bem vindo!</h1>
 		<h2 class="subtitulo">Acesse sua conta!</h2>
 	</div>
-	<form action=# method=post>
+	<form action="autenticador.php" method=post>
 		<fieldset class="grupo">
 			<div class="campo">
 				<label for=nome><strong>Login</strong></label>

@@ -45,7 +45,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 	
 	if (@!$_REQUEST['idIser'])
 	{
-		gravaLog(@$_SESSION["idUser"], date("Y-m-d h:m:s"), 'inseriu', 'user');
+		gravaLog(@$_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'inseriu', 'user');
 		
 		if (@$_SESSION["usuarioNivel"] == "1"){ 
 			$admin = $_POST['admin'];
@@ -63,7 +63,8 @@ if (@$_REQUEST['botao'] == "Gravar")
 		
 	} else 	
 	{
-		gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'editou', 'user');
+		echo "entrei";
+		gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'editou', 'user');
 		$insere = "UPDATE user SET 
 					nome = '{$_POST['nome']}'
 					, idade = '{$_POST['idade']}'
@@ -73,7 +74,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 					WHERE idUser = '{$_REQUEST['idUser']}'
 				";
 		$result_update = mysqli_query($con, $insere);
-
+		
 		if ($result_update) echo "<h2> Registro atualizado com sucesso!!!</h2>";
 		else echo "<h2> Nao consegui atualizar!!!</h2>";
 		
@@ -96,89 +97,80 @@ if (@$_REQUEST['botao'] == "Gravar")
 <body>
 
 <?php
-		if (@$_SESSION['idIser']){ ?>
-		<header>
-				<nav id="menu">
-					<object width="100%" height="100px" data="menu.php"></object>
-				</nav>
-			</header>
-		<?php } ?>
-
-	<div>
-		<?php
-		if (@!$_REQUEST['idIser']){ ?>
-		<h1 id="titulo">Faça seu cadastro</h1>
-		<?php } else { ?>
-			<header>
-				<nav id="menu">
-					<object width="100%" height="100px" data="menu.php"></object>
-				</nav>
-			</header>
-		<h1 id="titulo">Atualize o cadastro</h1>
-		<?php } ?>
-	</div>
-	<form enctype="multipart/form-data" action="cadUser.php?botao=gravar" method="post" name="user">	
+		if (!isset($_SESSION["idUserAtivo"]) || isset($_SESSION["login"]) ){ 
+			include('menu.php');	
+		} ?>
+	<main>
 		<div>
-			<?php echo @$_POST['idUser']; ?>
+			<h1 id="titulo">Faça seu cadastro</h1>
 		</div>
-		<fieldset class="grupo">
+		<form enctype="multipart/form-data" action="cadUser.php?botao=gravar" method="post" name="user">	
+			<label for="id"><strong>Código</strong></label>
+			<div>
+				<?php echo @$_POST['idUser']; ?>
+			</div>
+			<fieldset class="grupo">
+				<div class="campo">
+					<label for="nome"><strong>Nome</strong></label>
+					<input type="text" name="nome" id="nome" required value=<?php echo @$_POST['nome'];?> >
+				</div>
+				<div class="campo">
+					<label for="idade"><strong>Data de Nascimento</strong></label>
+					<input type="date" name="idade" id="idade" value=<?php echo @$_POST['idade'];?> >
+				</div>
+			</fieldset>	
 			<div class="campo">
-				<label for="nome"><strong>Nome</strong></label>
-				<input type="text" name="nome" id="nome" required value=<?php echo @$_POST['nome'];?> >
+				<label for="login"><strong>Login</strong></label>
+				<input type=text name="login" id="login" value=<?php echo @$_POST['login'];?> >
 			</div>
 			<div class="campo">
-				<label for="idade"><strong>Data de Nascimento</strong></label>
-				<input type="date" name="idade" id="idade" value=<?php echo @$_POST['idade'];?> >
+				<label for="senha"><strong>Senha</strong></label>
+				<input type=password name="senha" id="senha" value=<?php echo @$_POST['senha'];?> >
 			</div>
-		</fieldset>	
-		<div class="campo">
-			<label for="login"><strong>Login</strong></label>
-			<input type=text name="login" id="login" value=<?php echo @$_POST['login'];?> >
-		</div>
-		<div class="campo">
-			<label for="senha"><strong>Senha</strong></label>
-			<input type=password name="senha" id="senha" value=<?php echo @$_POST['senha'];?> >
-		</div>
-		<div class="campo">
-			<label for="senha2"><strong>Confirme sua Senha</strong></label>
-			<input type=password name="senha2" id="senha2">
-		</div>
+			<div class="campo">
+				<label for="senha2"><strong>Confirme sua Senha</strong></label>
+				<input type=password name="senha2" id="senha2">
+			</div>
 
-		<script>
-			$('form').on('submit', function () {
-			if ($('#senha').val() != $('#senha2').val()) {
-				alert('Senhas diferentes');
-				return false;
-			}
-		});
-		</script>
+			<script>
+				$('form').on('submit', function () {
+				if ($('#senha').val() != $('#senha2').val()) {
+					alert('Senhas diferentes');
+					return false;
+				}
+			});
+			</script>
 
-		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-		<div class="campo">
-			<label><strong>Nível do Usuário</strong></label>
-			<label>
-				<input type="radio" name="admin" value="1" <?php echo (@$_POST['admin'] == "1" ? " checked" : "" );?> > Administrador
-			</label>
-			<label>
-				<input type="radio" name="admin" value="0" <?php echo (@$_POST['admin'] == "0" ? " checked" : "" );?> > Usuário
-			</label>
-		</div>
-		<?php } ?>
-		<div>
-			<label><strong>Foto de perfil</strong></label>
-			<label class="foto" for="userfile">Sua melhor foto</label>
-			<input type="file" name="userfile" id="userfile"/>
-			</label>
-		</div>
-		<div class="botao">
-		<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
-		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-			<button class="botao2" type="image" name="botao" value="Gravar"
-			onclick="return confirm('Tem certeza que deseja deletar este registro?')">
-			<img src="imagens/icone-excluir.png" height="20px" width="20px"></button></button>
-		<?php } ?>
-		<input type="hidden" name="idUser" value="<?php echo @$_POST['idUser'] ?>" />
-		</div>
-	</form>
+			<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
+			<div class="campo">
+				<label><strong>Nível do Usuário</strong></label>
+				<label>
+					<input type="radio" name="admin" value="1" <?php echo (@$_POST['admin'] == "1" ? " checked" : "" );?> > Administrador
+				</label>
+				<label>
+					<input type="radio" name="admin" value="2" <?php echo (@$_POST['admin'] == "2" ? " checked" : "" );?> > Usuário
+				</label>
+			</div>
+			<?php } ?>
+			<div>
+				<label><strong>Foto de perfil</strong></label>
+				<label class="foto" for="userfile">Sua melhor foto</label>
+				<input type="file" name="userfile" id="userfile"/>
+				</label>
+			</div>
+			<div class="botao">
+			<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
+			<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
+				<button class="botao2" type="image" name="botao" value="Gravar"
+				onclick="return confirm('Tem certeza que deseja deletar este registro?')">
+				<img src="imagens/icone-excluir.png" height="20px" width="20px"></button></button>
+			<?php } ?>
+			<input type="hidden" name="idUser" value="<?php echo @$_POST['idUser'] ?>" />
+			</div>
+		</form>
+	</main>
+
+	<?php include('rodape.html'); ?>
+	
 </body>
 </html>

@@ -24,9 +24,12 @@ body{
     font-family: sans-serif;
     font-size: 1.2em;
     color: #59429d;
+    justify-content: center;
+}
+
+main{
     margin-left: 36%;
     margin-top: 3%;
-    justify-content: center;
 }
 
 input, button {

@@ -8,13 +8,13 @@ body{
     font-family: sans-serif;
     font-size: 1.2em;
     color: #59429d;
-    margin-left: 30%;
-    margin-top: 3%;
     justify-content: center;
 }
 
 .filtro{
     margin-top: 20px;
+    margin-left: 30%;
+    margin-top: 3%;
 }
 
 .filtro label {
@@ -45,15 +45,20 @@ body{
 #cabecalho{
     font-family: sans-serif;
     color:#59429d;
-    margin-left: 20%;   
+    margin-left: 50%;
+    margin-top: 3%;
 }
 
 #check{
     display: inline-block;
+    margin-left: 30%;
+    margin-top: 3%;
 }
 
 .lista{
     margin-top: 20px;
+    margin-left: 30%;
+    margin-top: 3%;
 }
 
 .editar-anuncio{

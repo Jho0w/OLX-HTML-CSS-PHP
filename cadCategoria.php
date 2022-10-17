@@ -15,7 +15,7 @@ if (@$_REQUEST['botao'] == "Excluir") {
 	
 		if($idCategoria != null)
 		{
-			gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'excluiu', 'categoria');
+			gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'excluiu', 'categoria');
 			$query_excluir = "
 				DELETE FROM categoria WHERE idCategoria=$idCategoria
 			";
@@ -33,7 +33,7 @@ if (@$_REQUEST['botao'] == "Excluir") {
 
 if (@$_REQUEST['idCategoria'] and $_REQUEST['botao'] == "Editar")
 {
-	gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'editou', 'categoria');
+	gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'editou', 'categoria');
 	$query = "
 		SELECT * FROM categoria WHERE idCategoria=$idCategoria
 	";
@@ -51,7 +51,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 		
 		if (@!$_REQUEST['idCategoria'])
 		{
-			gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'inseriu', 'categoria');
+			gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'inseriu', 'categoria');
 			
 			$insere = "INSERT INTO categoria (descricao) VALUES ('{$_POST['descricao']}')";
 			$result_insere = mysqli_query($con, $insere);
@@ -87,81 +87,80 @@ if (@$_REQUEST['botao'] == "Gravar")
 	<title>Criar Categoria</title>
 </head>
 <body>
+	<?php include('menu.php'); ?>
 
-	<header>
-		<nav id="menu">
-			<object width="100%" height="100px" data="menu.php"></object>
-		</nav>
-	</header>
-
-<div class="criar-categoria">
-	<div>
-		<h1 id="cabecalho">Crie aqui a categoria</h1>
-	</div>
-<form action="cadCategoria.php?botao=Gravar" method="post" name="categoria">
-	<fieldset class="grupo">
-		<div class="campo">
-			<label for="id"><strong>Código</strong></label>
-			<label class="campo-id" name="id"><?php echo @$_POST['idCategoria']; ?></label>
+	<main>
+		<div class="criar-categoria">
+			<div>
+				<h1 id="cabecalho">Crie aqui a categoria</h1>
+			</div>
+		<form action="cadCategoria.php?botao=Gravar" method="post" name="categoria">
+			<fieldset class="grupo">
+				<div class="campo">
+					<label for="id"><strong>Código</strong></label>
+					<label class="campo-id" name="id"><?php echo @$_POST['idCategoria']; ?></label>
+				</div>
+				<div class="campo">
+					<label for="descricao"><strong>Titulo</strong></label>
+					<input type=text name="descricao" required value=<?php echo @$_POST['descricao']; ?> >
+				</div>
+			</fieldset>
+			<div class="botao">
+				<button class = botao1 type=submit value="Gravar" name="botao">Concluido</button>
+				<button class = botao2 type=submit value="Excluir" name="botao" 
+				onclick="return confirm('Tem certeza que deseja deletar este registro?')">Excluir</button>
+				<input type="hidden" name="idCategoria" value="<?php echo @$_POST['idCategoria'] ?>" />
+		</form>
+				<form action="cadCategoria.php"><button class = botao3 type=submit value="Novo" name="novo">Novo</button></form>
+			</div>
 		</div>
-		<div class="campo">
-			<label for="descricao"><strong>Titulo</strong></label>
-			<input type=text name="descricao" required value=<?php echo @$_POST['descricao']; ?> >
+
+
+		<div>
+			<h1 id="meio">Todas categorias</h1>
 		</div>
-	</fieldset>
-	<div class="botao">
-		<button class = botao1 type=submit value="Gravar" name="botao">Concluido</button>
-		<button class = botao2 type=submit value="Excluir" name="botao" 
-		onclick="return confirm('Tem certeza que deseja deletar este registro?')">Excluir</button>
-		<input type="hidden" name="idCategoria" value="<?php echo @$_POST['idCategoria'] ?>" />
-</form>
-		<form action="cadCategoria.php"><button class = botao3 type=submit value="Novo" name="novo">Novo</button></form>
-	</div>
-</div>
 
 
-<div>
-	<h1 id="meio">Todas categorias</h1>
-</div>
+		<!--Tabela para mostrar todas as categorias-->
+		<div class="table100">
+			<table>
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Categoria</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					<?php
 
+					@$categoria = $_POST['idCategoria'];
+					$query = "SELECT *
+							FROM categoria 
+							WHERE idCategoria > 0 ";
+					$result = mysqli_query($con, $query);
 
-<!--Tabela para mostrar todas as categorias-->
-<div class="table100">
-	<table>
-		<thead>
-			<tr>
-				<th>Código</th>
-				<th>Categoria</th>
-				<th>&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-			<?php
+					while ($coluna=mysqli_fetch_array($result)) 
+					{
 
-			@$categoria = $_POST['idCategoria'];
-			$query = "SELECT *
-					FROM categoria 
-					WHERE idCategoria > 0 ";
-			$result = mysqli_query($con, $query);
+					?>
+					<tr>
+						<th><?php echo $coluna['idCategoria'];?> </th>
+						<th><?php echo $coluna['descricao'];?> </th>
+						<th>
+					<a href="cadCategoria.php?botao=Editar&idCategoria=<?php echo $coluna['idCategoria']; ?>" >Editar</a>
+					</th>
+					</tr>
 
-			while ($coluna=mysqli_fetch_array($result)) 
-			{
+					<?php } ?>
+					
+				</tbody>
+			</table>
+		</div>
+	</main>
 
-			?>
-			<tr>
-				<th><?php echo $coluna['idCategoria'];?> </th>
-				<th><?php echo $coluna['descricao'];?> </th>
-				<th>
-			<a href="cadCategoria.php?botao=Editar&idCategoria=<?php echo $coluna['idCategoria']; ?>" >Editar</a>
-			</th>
-			</tr>
-
-			<?php } ?>
-			
-		</tbody>
-	</table>
-</div>
-
+	<?php include('rodape.html'); ?>
+	
 </body>
 </html>

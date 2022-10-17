@@ -3,6 +3,15 @@
 	include ('config.php'); 
 	require('verifica.php');
 	$idUser = $_SESSION["idUserAtivo"];
+
+	function inverteData($data){
+		if(count(explode("/",$data)) > 1){
+			return implode("-",array_reverse(explode("/",$data)));
+		}elseif(count(explode("-",$data)) > 1){
+			return implode("/",array_reverse(explode("-",$data)));
+		}
+	}
+
 ?>
 
 <!DOCTYPE html>
@@ -28,19 +37,23 @@
 	<main>
 
 		<div>
-			<h1 id="cabecalho">Anúncios Ativos</h1>
+			<h1 id="cabecalho">Todos os Usuários</h1>
 		</div>
 
 
-		<form action="anuncioAtivo.php?botao=gerar" method="post" name="form1">
+		<form action="usuarios.php?botao=gerar" method="post" name="form1">
 			<div class="filtro">
 				<label><strong>Filtro</strong></label>
 				<label>
-					<input type=radio name="idAtivo" value="1" <?php echo (@$_POST['idAtivo'] == "1" ? " checked" : "" );?> > Ativo
-				</label>
+					<input type=radio name="idAdmin" value="1" <?php echo (@$_POST['idAdmin'] == "1" ? " checked" : "" );?> > Ativo
+                    <?php $admin="Adm"; ?>
+                </label>
 				<label>
-					<input type=radio name="idAtivo" value="2" <?php echo (@$_POST['idAtivo'] == "2" ? " checked" : "" );?> > Inativo 
-				</label>
+					<input type=radio name="idAdmin" value="2" <?php echo (@$_POST['idAdmin'] == "2" ? " checked" : "" );?> > Inativo 
+                    <?php $admin="User"; ?>
+                </label>
+				<label>
+					<input type=radio name="idAdmin" value=""> Todos</label>
 				<div>
 					<button class="botao-filtro" type="submit" name="botao" value="Gerar">Filtrar</button>
 				</div>
@@ -52,9 +65,9 @@
 		<div class="lista">
 		<?php
 
-		@$idAtivo = $_POST['idAtivo'];
-		$query = "SELECT * FROM anuncio INNER JOIN categoria ON anuncio.idCategoria = categoria.idCategoria ";
-		$query .= ($idAtivo ? " WHERE anuncioAtivo = $idAtivo " : "");
+		@$idAdmin = $_POST['idAdmin'];
+		$query = "SELECT * FROM user";
+		$query .= ($idAdmin ? " WHERE admin = $idAdmin " : "");
 		$result = mysqli_query($con, $query);
 
 		while ($coluna=mysqli_fetch_array($result)) 
@@ -62,21 +75,27 @@
 			?>
 			<div class="editar-anuncio">
 						<?php 
-						if($coluna['anuncioAtivo'] == '1'){ ?>
+						if($coluna['admin'] == '1'){ 
+							$admin="Adm";
+							?>
 							<div class="container">
 						<?php }
-						else{ ?>
+						else{ 
+							$admin="User";
+							?>
 							<div class="container2">
 						<?php } ?>
-					<div id="foto"><p><img class="imagem" src="uploads/<?php echo $coluna['foto']; ?>"></p></div>
-					<div id="titulo"><strong><?php echo $coluna['titulo']; ?></strong></div>
-					<div id="preco"><strong class="conv-preco"><?php echo $coluna['preco']; ?></strong></div>
-						
-					<div id="descricao"><?php echo $coluna['descricaoAnuncio']; ?></div>
-					<div id="categoria"><p><?php echo $coluna['descricao']; ?></p></div>
+					<div id="foto"><p><img class="imagem" src="uploads/<?php echo $coluna['avatar']; ?>"></p></div>
+					<div id="titulo"><strong><?php echo $coluna['nome']; ?></strong></div>
+					
+					<div id="preco"><strong class="conv-data"><?php echo date('d-m-Y', strtotime($coluna['idade'])); ?></strong></div>
+					<div id="descricao">
+                        Login: <?php echo $coluna['login']; ?>
+                    </div>
+					<div id="categoria"><p><?php echo $admin ?></p></div>
 					<div id="editar">
 						<button class="botao" type="image" name="botao" value="Excluir">
-							<a href="cadAnuncio.php?pag=prop&idAnuncio=<?php echo $coluna['idAnuncio']; ?>" > 
+							<a href="cadUser.php?pag=prop&idUser=<?php echo $coluna['idUser']; ?>" > 
 								<img src="imagens/icone-editar.png" height="18px" width="18px">
 							</a>
 						</button>

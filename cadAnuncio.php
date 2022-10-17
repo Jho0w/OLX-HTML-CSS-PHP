@@ -4,7 +4,7 @@ require ('config.php');
 require('verifica.php');
 include ('funcaoLog.php');
 
-$idUser = $_SESSION["idUser"];
+$idUser = $_SESSION["idUserAtivo"];
 @$idAnuncio = $_REQUEST["idAnuncio"];
 
 if (@$_REQUEST['botao'] == "Excluir") {
@@ -91,92 +91,93 @@ if (@$_REQUEST['botao'] == "Gravar")
 </head>
 <body>
 
-	<header>
-		<nav id="menu">
-			<object width="100%" height="100px" data="menu.php"></object>
-		</nav>
-	</header>
-
-	<div>
-		<h1 id="cabecalho">Crie agora seu anúncio!</h1>
-	</div>	
+	<?php include('menu.php'); ?>
 	
-	<form enctype="multipart/form-data" action="cadAnuncio.php?botao=gravar" method="post" name="anuncio">
-	<div>
-		<label><strong>Código</strong></label>
-		<label><?php echo @$_POST['idAnuncio']; ?></label>
-	</div>
-	<div class="grupo">
-		<label><strong>Foto</strong></label>
-		<label class="foto" for="userfile">Sua melhor foto</label>
-		<input type="file" name="userfile" id="userfile"/>
-		</label>
-	</div>
-	<fieldset class="grupo">
-		<div class="campo">
-			<label for="titulo"><strong>Titulo</strong></label>
-			<input class="campo-titulo" type="text" name="titulo" id="titulo" required value=<?php echo @$_POST['titulo'];?> >
+	<main>
+		<div>
+			<h1 id="cabecalho">Crie agora seu anúncio!</h1>
+		</div>	
+		
+		<form enctype="multipart/form-data" action="cadAnuncio.php?botao=gravar" method="post" name="anuncio">
+		<div>
+			<label><strong>Código</strong></label>
+			<label><?php echo @$_POST['idAnuncio']; ?></label>
 		</div>
-		<div class="campo">
-			<label for="descricaoAnuncio"><strong>Descrição</strong></label>
-			<input type="textarea" name="descricaoAnuncio" id="descricaoAnuncio" value=<?php echo @$_POST['descricaoAnuncio'];?> >
+		<div class="grupo">
+			<label><strong>Foto</strong></label>
+			<label class="foto" for="userfile">Sua melhor foto</label>
+			<input type="file" name="userfile" id="userfile"/>
+			</label>
 		</div>
+		<fieldset class="grupo">
+			<div class="campo">
+				<label for="titulo"><strong>Titulo</strong></label>
+				<input class="campo-titulo" type="text" name="titulo" id="titulo" required value=<?php echo @$_POST['titulo'];?> >
+			</div>
+			<div class="campo">
+				<label for="descricaoAnuncio"><strong>Descrição</strong></label>
+				<input type="textarea" name="descricaoAnuncio" id="descricaoAnuncio" value=<?php echo @$_POST['descricaoAnuncio'];?> >
+			</div>
+			<div class="campo">
+				<label for="preco"><strong>Preço</strong></label>
+				<input type=text name="preco" value=<?php echo @$_POST['preco']; ?> >
+			</div>
+		</fieldset>	
 		<div class="campo">
-			<label for="preco"><strong>Preço</strong></label>
-			<input type=text name="preco" value=<?php echo @$_POST['preco']; ?> >
-		</div>
-	</fieldset>	
-	<div class="campo">
-		<label for="categoria"><strong>Categoria</strong></label>
-		<?php
+			<label for="categoria"><strong>Categoria</strong></label>
+			<?php
+				
+				$query = "
+					SELECT idCategoria, descricao
+					FROM categoria
+				";
+				$result = mysqli_query($con, $query);
+			?>
+
+			<select name="idCategoria" required>
+			<option selected disabled value="">Selecione</option>
 			
-			$query = "
-				SELECT idCategoria, descricao
-				FROM categoria
-			";
-			$result = mysqli_query($con, $query);
-		?>
+			<?php
+			while( $row = mysqli_fetch_assoc($result) )
+			{	
+			?>
 
-		<select name="idCategoria">
-		<option value="">Selecione</option>
-		
-		<?php
-		while( $row = mysqli_fetch_assoc($result) )
-		{	
-		?>
+			<option value="<?php echo $row['idCategoria'];?>">
 
-		<option value="<?php echo $row['idCategoria'];?>">
+			<?php echo @$row['descricao'] ?>
 
-		<?php echo @$row['descricao'] ?>
+			</option>
+			
+			<?php
+				}
+			?>
+			</select>
+		</div>
 
-		</option>
-		
-		<?php
-			}
-		?>
-		</select>
-	</div>
-
-	<?php if ($_SESSION["usuarioNivel"] == "1"){ ?>
-	<div class="campo">
-		<label><strong>Anúncio Ativo</strong></label>
-		<label>
-			<input type=radio name="anuncioAtivo" value="1" <?php echo (@$_POST['anuncioAtivo'] == "1" ? " checked" : "" );?> > Ativo
-		</label>
-		<label>
-			<input type=radio name="anuncioAtivo" value="2"<?php echo (@$_POST['anuncioAtivo'] == "2" ? " checked" : "" );?> > Offline 
-		</label>
-	</div>
-	<?php } ?>
-	
-		<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
-		<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
-		<button class="botao2" type="image" name="botao" value="Excluir" onclick="return confirm('Tem certeza que deseja deletar este registro?')">
-			<img src="imagens/icone-excluir.png" height="20px" width="20px"></button>
-	
+		<?php if ($_SESSION["usuarioNivel"] == "1"){ ?>
+		<div class="campo">
+			<label><strong>Anúncio Ativo</strong></label>
+			<label>
+				<input type=radio name="anuncioAtivo" value="1" <?php echo (@$_POST['anuncioAtivo'] == "1" ? " checked" : "" );?> > Ativo
+			</label>
+			<label>
+				<input type=radio name="anuncioAtivo" value="2"<?php echo (@$_POST['anuncioAtivo'] == "2" ? " checked" : "" );?> > Offline 
+			</label>
+		</div>
 		<?php } ?>
 		
-		<input type="hidden" name="idAnuncio" value="<?php echo @$_POST['idAnuncio'] ?>" />
-	</form>
+			<button class="botao1" type="submit" name="botao" value="Gravar">Concluido</button>
+			<?php if (@$_SESSION["usuarioNivel"] == "1"){ ?>
+			<button class="botao2" type="image" name="botao" value="Excluir" onclick="return confirm('Tem certeza que deseja deletar este registro?')">
+				<img src="imagens/icone-excluir.png" height="20px" width="20px"></button>
+		
+			<?php } ?>
+			
+			<input type="hidden" name="idAnuncio" value="<?php echo @$_POST['idAnuncio'] ?>" />
+		</form>
+	</main>
+
+	<?php include('rodape.html'); ?>
+	
 </body>
 </html>
