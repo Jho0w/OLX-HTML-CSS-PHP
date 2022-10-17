@@ -9,7 +9,7 @@ $idUser = $_SESSION["idUserAtivo"];
 
 if (@$_REQUEST['botao'] == "Excluir") {
 
-		gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'excluiu', 'anuncio');
+		gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'excluiu', 'anuncio');
 		$query_excluir = "
 			DELETE FROM anuncio WHERE idAnuncio=$idAnuncio
 		";
@@ -52,7 +52,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 	
 	if (@!$_REQUEST['idAnuncio'])
 	{
-		gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'inseriu', 'anuncio');
+		gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'inseriu', 'anuncio');
 		$insere = "INSERT INTO anuncio (foto, titulo, descricaoAnuncio, preco, idCategoria, idUser, anuncioAtivo) VALUES ('{$_FILES["userfile"]["name"]}', '{$_POST['titulo']}', '{$_POST['descricaoAnuncio']}', '{$_POST['preco']}', '{$_POST['idCategoria']}', '$idUser', '$anuncioAtivo')";
 		$result_insere = mysqli_query($con, $insere);
 		
@@ -61,7 +61,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 		
 	} else 	
 	{
-		gravaLog($_SESSION["idUser"], date("Y-m-d h:m:s"), 'editou', 'anuncio');
+		gravaLog($_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'editou', 'anuncio');
 		$insere = "UPDATE anuncio SET 
 					titulo = '{$_POST['titulo']}'
 					, descricaoAnuncio = '{$_POST['descricaoAnuncio']}'

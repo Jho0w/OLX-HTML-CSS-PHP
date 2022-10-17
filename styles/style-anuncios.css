@@ -116,7 +116,7 @@ select{
 
 #descricao{
     grid-area: descricao;
-    font-size: 18px;
+    font-size: 15px;
     height: 80px;
     width: 220px;
     position: relative;

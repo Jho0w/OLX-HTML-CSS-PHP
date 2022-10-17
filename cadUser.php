@@ -6,7 +6,7 @@ include ('funcaoLog.php');
 $idUser = @$_REQUEST['idUser'];
 
 if (@$_REQUEST['botao'] == "Excluir") {
-		gravaLog($idUser, date("Y-m-d h:m:s"), 'excluiu', 'user');
+		gravaLog(@$_SESSION["idUserAtivo"], date("Y-m-d h:m:s"), 'excluiu', 'user');
 		$query_excluir = "
 			DELETE FROM user WHERE idUser=$idUser
 		";
@@ -51,7 +51,7 @@ if (@$_REQUEST['botao'] == "Gravar")
 			$admin = $_POST['admin'];
 			}
 			else{ 
-			$admin = 0; 
+			$admin = 2; 
 			}
 
 		$insere = "INSERT INTO user (nome, idade, login, senha, admin, avatar) VALUES ('{$_POST['nome']}', '{$_POST['idade']}', '{$_POST['login']}', '$senha', '$admin', '{$_FILES["userfile"]["name"]}')";

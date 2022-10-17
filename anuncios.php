@@ -22,6 +22,7 @@
 <body>
 	
 	<?php include('menu.php'); ?>
+	
 	<main>
 		<div>
 			<h1 id="cabecalho">Anúncios</h1>

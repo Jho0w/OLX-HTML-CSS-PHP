@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<div class=retangulo-fundo>
+<div class="retangulo-fundo">
 	<div class=titulo>
 		<h1 class="titulo-1">Bem vindo!</h1>
 		<h2 class="subtitulo">Acesse sua conta!</h2>
